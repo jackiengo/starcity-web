@@ -3,12 +3,12 @@
             [blueprints.models.referral :as referral]
             [bouncer.core :as b]
             [bouncer.validators :as v]
-            [clojure.spec :as s]
+            [clojure.spec.alpha :as s]
             [clojure.string :as string]
             [datomic.api :as d]
             [facade.core :as facade]
             [net.cgrand.enlive-html :as html]
-            [plumbing.core :as plumbing]
+            [toolbelt.core :as tb]
             [ring.util.response :as response]
             [starcity.controllers.common :as common]
             [starcity.datomic :refer [conn]]
@@ -80,7 +80,7 @@
   (html/html
    (map
     (fn [[name code tours]]
-      (let [attrs   (plumbing/assoc-when {:value code} :disabled (not tours))
+      (let [attrs   (tb/assoc-when {:value code} :disabled (not tours))
             content (if-not tours (str name " - not touring currently") name)]
         [:option attrs content]))
     properties)))

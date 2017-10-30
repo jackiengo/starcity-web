@@ -10,7 +10,7 @@
             [optimus.prime :as optimus]
             [optimus.strategies :as strategies]
             [org.httpkit.server :refer [run-server]]
-            [plumbing.core :refer [assoc-when]]
+            [toolbelt.core :as tb]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.format :refer [wrap-restful-format]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
@@ -40,10 +40,10 @@
       (handler req)
       (catch Exception e
         (do
-          (t/error e ::unhandled (assoc-when {:uri         uri
-                                              :method      request-method
-                                              :remote-addr remote-addr}
-                                             :user (get-in session [:identity :account/email])))
+          (t/error e ::unhandled (tb/assoc-when {:uri         uri
+                                                 :method      request-method
+                                                 :remote-addr remote-addr}
+                                                :user (get-in session [:identity :account/email])))
           {:status 500 :body "Unexpected server error!"})))))
 
 
@@ -54,10 +54,10 @@
     (when-not (or (= uri "/favicon.ico")
                   (string/starts-with? uri "/assets")
                   (string/starts-with? uri "/bundles"))
-      (t/info :web/request (assoc-when {:uri         uri
-                                        :method      request-method
-                                        :remote-addr remote-addr}
-                                       :user (get-in session [:identity :account/email]))))
+      (t/info :web/request (tb/assoc-when {:uri         uri
+                                           :method      request-method
+                                           :remote-addr remote-addr}
+                                          :user (get-in session [:identity :account/email]))))
     (handler req)))
 
 
@@ -65,9 +65,9 @@
   [handler]
   (let [wrapped (-> handler wrap-reload wrap-enlive-reload)]
     (fn [req]
-     (if (config/is-development? config)
-       (wrapped req)
-       (handler req)))))
+      (if (config/is-development? config)
+        (wrapped req)
+        (handler req)))))
 
 
 ;; =============================================================================
@@ -80,12 +80,7 @@
    "main.js" ["/js/main.js"]
    "tour.js" ["/js/tour.js"]
 
-   ;;; CLJS apps
-   "admin.js"      ["/js/cljs/admin.js"]
-   "onboarding.js" ["/js/cljs/onboarding.js"]
-
    ;;; Styles
-   "antd.css"   ["/assets/css/antd.css"]
    "public.css" ["/assets/css/public.css"]
    "styles.css" ["/assets/css/starcity.css"]})
 

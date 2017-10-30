@@ -86,12 +86,22 @@
   (common/render-ok (view req)))
 
 
+
+(defn- authenticate
+  "Return the user record found under `email` iff a user record exists for
+  that email and the `password` matches."
+  [db email password]
+  (when-let [account (d/entity db [:account/email email])]
+    (when (auth/matching-password? password (:account/password account))
+      (common/session-data account))))
+
+
 (defn login
   "Log a user in."
   [{:keys [params session] :as req}]
   (let [vresult (-> params clean-credentials validate-credentials)]
     (if-let [{:keys [email password]} (validation/valid? vresult)]
-      (if-let [account (auth/authenticate (d/db conn) email password)]
+      (if-let [account (authenticate (d/db conn) email password)]
         (if (:account/activated account)
           ;; success
           (let [next-url (url-after-login account req)

@@ -1,12 +1,10 @@
 (ns starcity.core
   (:gen-class)
   (:require [starcity.server]
-            [starcity.countries]
             [starcity.datomic]
             [starcity.log]
             [starcity.nrepl]
             [starcity.scheduler]
-            [starcity.reactor]
             [clojure.tools.cli :refer [parse-opts]]
             [mount.core :as mount]))
 
@@ -17,8 +15,10 @@
     :parse-fn keyword
     :validate [#{:prod :dev :stage} "Must be one of #{prod dev stage"]]])
 
+
 (defn- exit [status msg]
   (System/exit status))
+
 
 (defn -main [& args]
   (let [{:keys [options errors]} (parse-opts args cli-options)]

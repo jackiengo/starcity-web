@@ -5,10 +5,8 @@
              [route :as route]]
             [customs.access :as access]
             [ring.util.response :as response]
-            [starcity.api :as api]
             [starcity.config :as config :refer [config]]
             [starcity.controllers
-             [admin :as admin]
              [auth :as auth]
              [careers :as careers]
              [collaborate :as collaborate]
@@ -18,7 +16,6 @@
              [lifestyle :as lifestyle]
              [login :as login]
              [newsletter :as newsletter]
-             [onboarding :as onboarding]
              [privacy :as privacy]
              [schedule-tour :as schedule-tour]
              [signup :as signup]
@@ -35,8 +32,8 @@
   [{:keys [identity] :as req}]
   (-> (case (:account/role identity)
         :account.role/applicant  (config/apply-hostname config)
-        :account.role/onboarding "/onboarding"
-        :account.role/admin      "/admin"
+        :account.role/onboarding (config/onboarding-hostname config)
+        :account.role/admin      (config/odin-hostname config)
         :account.role/member     (config/odin-hostname config)
         "/")
       (response/redirect)))
@@ -91,28 +88,19 @@
       {:handler  access/unauthenticated-user
        :on-error (fn [req _] (redirect-by-role req))}))
 
+
   (context "/admin" []
-    (restrict
-        (routes
-         (GET "*" [] admin/show))
-      {:handler  {:and [access/authenticated-user (access/user-isa :account.role/admin)]}
-       :on-error (fn [req _] (redirect-by-role req))}))
+    (routes (ANY "*" [] (fn [_] (response/redirect (config/odin-hostname config) :moved-permanently)))))
 
   (context "/me" []
-    (routes (ANY "*" [] (fn [_] (response/redirect (config/odin-hostname config))))))
+    (routes (ANY "*" [] (fn [_] (response/redirect (config/odin-hostname config) :moved-permanently)))))
 
   (context "/onboarding" []
-    (restrict
-        (routes
-         (GET "*" [] onboarding/show))
-      {:handler  {:and [access/authenticated-user (access/user-isa :account.role/onboarding)]}
-       :on-error (fn [req _] (redirect-by-role req))}))
+    (routes (ANY "*" [] (fn [_] (response/redirect (config/onboarding-hostname config) :moved-permanently)))))
 
-  (GET "/apply" []
-       (fn [_]
-         (response/redirect (config/apply-hostname config) :moved-permanently)))
+  (context "/apply" []
+    (routes (ANY "*" [] (fn [_] (response/redirect (config/apply-hostname config) :moved-permanently)))))
 
-  (context "/api/v1" [] api/routes)
 
   (context "/webhooks" []
     (POST "/stripe" [] stripe/hook))

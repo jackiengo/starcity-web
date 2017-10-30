@@ -6,10 +6,8 @@
             [facade.snippets :as snippets]
             [net.cgrand.enlive-html :as html]
             [starcity.controllers.common :as common]
-            [starcity.datomic :refer [conn]]
-            [toolbelt.datomic :as td]
-            [clojure.spec :as s]
-            [toolbelt.predicates :as p]))
+            [starcity.datomic :refer [conn]]))
+
 
 ;; =============================================================================
 ;; Views

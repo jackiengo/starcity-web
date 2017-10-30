@@ -123,6 +123,7 @@
 ;; =============================================================================
 ;; Activation
 
+
 (defn activate
   [{:keys [params session] :as req}]
   (let [{:keys [email hash]} params]
@@ -130,9 +131,10 @@
       (show-invalid-activation req)
       (let [acct (account/by-email (d/db conn) email)]
         (if (= hash (account/activation-hash acct))
-          (let [session (assoc session :identity (auth/session-data acct))]
+          (let [session (assoc session :identity (common/session-data acct))]
             (do
-              @(d/transact conn [(auth/activate acct)])
+              @(d/transact conn [{:db/id             (:db/id acct)
+                                  :account/activated true}])
               (timbre/info :account/activated {:email email})
               (-> (response/redirect (config/apply-hostname config))
                   (assoc :session session))))

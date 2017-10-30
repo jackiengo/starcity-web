@@ -1,6 +1,6 @@
 (ns starcity.util.request
   (:require [datomic.api :as d]
-            [clojure.spec :as s]
+            [clojure.spec.alpha :as s]
             [toolbelt.predicates :as p]))
 
 (defn requester

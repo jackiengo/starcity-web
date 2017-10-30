@@ -68,15 +68,6 @@
 ;; Datomic
 ;; =============================================================================
 
-(defn ^{:deprecated "1.7.0"} datomic-part
-  "The Datomic partition.
-
-  DEPRECATED: will remove after the transactor specifies our desired partition
-  as its default."
-  [config]
-  (get-in config [:datomic :part]))
-
-
 (defn datomic-uri
   "URI of the Datomic database connection."
   [config]
@@ -117,6 +108,12 @@
   (get-in config [:hosts :odin]))
 
 
+(defn onboarding-hostname
+  "The hostname of the onboarding service."
+  [config]
+  (get-in config [:hosts :onboarding]))
+
+
 ;; =============================================================================
 ;; Logs
 ;; =============================================================================
@@ -137,128 +134,3 @@
   "The file to log to."
   [config]
   (get-in config [:log :file]))
-
-
-;; =============================================================================
-;; Stripe
-;; =============================================================================
-
-
-(defn stripe-public-key
-  [config]
-  (get-in config [:secrets :stripe :public-key]))
-
-
-(defn stripe-private-key
-  [config]
-  (get-in config [:secrets :stripe :secret-key]))
-
-
-;; =============================================================================
-;; Weebly
-;; =============================================================================
-
-
-(defn weebly-site-id
-  [config]
-  (get-in config [:secrets :weebly :site-id]))
-
-
-(defn weebly-form-id
-  [config]
-  (get-in config [:secrets :weebly :form-id]))
-
-
-;; =============================================================================
-;; Slack
-;; =============================================================================
-
-
-(defn slack-client-id
-  [config]
-  (get-in config [:secrets :slack :client-id]))
-
-
-(defn slack-secret-key
-  [config]
-  (get-in config [:secrets :slack :client-secret]))
-
-
-(defn slack-webhook-url
-  [config]
-  (get-in config [:secrets :slack :webhook]))
-
-
-(defn slack-username
-  [config]
-  (get-in config [:slack :username]))
-
-
-;; =============================================================================
-;; Community Safety
-;; =============================================================================
-
-
-(defn community-safety-api-key
-  [config]
-  (get-in config [:secrets :community-safety :api-key]))
-
-
-;; =============================================================================
-;; Mailgun
-;; =============================================================================
-
-
-(defn mailgun-domain
-  [config]
-  (get-in config [:mailgun :domain]))
-
-
-(defn mailgun-sender
-  [config]
-  (get-in config [:mailgun :sender]))
-
-
-(defn mailgun-api-key
-  [config]
-  (get-in config [:mailgun :api-key]))
-
-
-;; =============================================================================
-;; Plaid
-;; =============================================================================
-
-
-(defn plaid-env
-  [config]
-  (get-in config [:plaid :env]))
-
-
-(defn plaid-webhook-url
-  [config]
-  (get-in config [:plaid :webhook]))
-
-
-(defn plaid-client-id
-  [config]
-  (get-in config [:plaid :client-id]))
-
-
-(defn plaid-secret-key
-  [config]
-  (get-in config [:plaid :secret-key]))
-
-
-(defn plaid-public-key
-  [config]
-  (get-in config [:plaid :public-key]))
-
-
-;; =============================================================================
-;; Misc
-;; =============================================================================
-
-(defn file-data-dir
-  "The directory to store file data."
-  [config]
-  (get-in config [:data-dir]))
