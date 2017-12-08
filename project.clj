@@ -1,11 +1,11 @@
-(defproject starcity/web "3.0.0-SNAPSHOT"
+(defproject starcity/public "3.0.0-SNAPSHOT"
   :description "The web app for https://joinstarcity.com"
   :url "https://joinstarcity.com"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [;; Clojure
-                 [org.clojure/clojure "1.9.0-beta3"]
+                 [org.clojure/clojure "1.9.0"]
                  [org.clojure/core.async "0.3.443"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [org.clojure/test.check "0.9.0"]
@@ -60,7 +60,7 @@
 
   :clean-targets ^{:protect false} [:target-path]
 
-  :uberjar-name "web-standalone.jar"
+  :uberjar-name "public-standalone.jar"
 
   :cooper {"internal" ["sass" "--watch" "-E" "UTF-8" "style/sass/main.sass:resources/public/assets/css/starcity.css"]
            "public"   ["sass" "--watch" "-E" "UTF-8" "style/sass/public.scss:resources/public/assets/css/public.css"]}

@@ -5,7 +5,6 @@
                        :domain #or [#env COOKIE_DOMAIN "localhost"]}}
 
  :datomic {:uri #or [#env DATOMIC_URI
-                     ^:ref [:secrets :datomic :uri]
                      "datomic:mem://localhost:4334/starcity"]}
 
  :log {:level    #profile {:prod    :info
@@ -19,8 +18,7 @@
 
  :hosts {:this       #profile {:prod  "https://joinstarcity.com"
                                :stage "https://staging.joinstarcity.com"
-                               :dev   #join ["http://localhost:"
-                                             ^:ref [:webserver :port]]}
+                               :dev   #join ["http://localhost:" ^:ref [:webserver :port]]}
          :apply      #profile {:prod  "https://apply.joinstarcity.com"
                                :stage "https://apply.staging.joinstarcity.com"
                                :dev   "http://localhost:8081"}
@@ -29,6 +27,4 @@
                                :dev   "http://localhost:8082"}
          :onboarding #profile {:prod  "https://onboarding.joinstarcity.com"
                                :stage "https://onboarding.staging.joinstarcity.com"
-                               :dev   "http://localhost:8083"}}
-
- :secrets #include #env STARCITY_SECRETS}
+                               :dev   "http://localhost:8083"}}}
