@@ -1,8 +1,8 @@
-(ns starcity.core-test
+(ns public.core-test
   (:require
    [clojure.test :refer :all]
    [datomic.api :as d]
-   [starcity.test.datomic :as db :refer [with-conn]]))
+   [public.test.datomic :as db :refer [with-conn]]))
 
 (use-fixtures :once db/conn-fixture)
 

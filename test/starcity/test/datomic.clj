@@ -1,4 +1,4 @@
-(ns starcity.test.datomic
+(ns public.test.datomic
   (:require [datomic.api :as d]
             [blueprints.core :as blueprints]))
 
